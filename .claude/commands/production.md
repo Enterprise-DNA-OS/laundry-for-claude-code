@@ -1,3 +1,7 @@
+---
+description: "Today in the plant"
+---
+
 # Today in the plant
 
 Sort by due date. Call out recleans, missing care labels and unfinished pieces. Do not mark ready until each garment is checked and racked.

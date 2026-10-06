@@ -1,3 +1,7 @@
+---
+description: "Monday laundry review"
+---
+
 # Monday laundry review
 
 This reads attention, metrics and delivery-run and writes drafts/. Read the saved file, explain the three biggest exceptions, and suggest owners. Keep NZD and AUD separate. No messages are sent.

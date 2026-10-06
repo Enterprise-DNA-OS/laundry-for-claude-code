@@ -1,3 +1,7 @@
+---
+description: "Add a business record"
+---
+
 # Add a business record
 
 Use add store, customer, order, garment, run, stop, claim or substance. Read existing records first, resolve names, and ask for missing required facts. Verify the written record afterwards.

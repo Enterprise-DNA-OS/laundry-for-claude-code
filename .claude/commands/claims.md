@@ -1,3 +1,7 @@
+---
+description: "Customer garment claims"
+---
+
 # Customer garment claims
 
 Read the related order. Add claim records and agreed follow-up dates. Resolve with the actual remedy after it is agreed and completed. Never infer liability, issue a refund or send a message.

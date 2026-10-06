@@ -1,3 +1,7 @@
+---
+description: "One ticket and its history"
+---
+
 # One ticket and its history
 
 Read the whole ticket, garments, claims and history before proposing a change. Ask which record if the CLI reports ambiguity.

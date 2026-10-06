@@ -250,6 +250,7 @@ try {
   );
   assert.equal(imported.total_cents, 1850);
   assert.equal(imported.pieces, 0);
+  assert.equal((await call("orders")).find(x => x.ticket.endsWith("-901")).days_on_rack, null);
   assert.ok(
     (await call("questions", "10")).rows.some(
       (x) => x.ticket === imported.ticket,

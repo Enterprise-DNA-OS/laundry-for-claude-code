@@ -1,3 +1,7 @@
+---
+description: "Customer list"
+---
+
 # Customer list
 
 Find the exact customer. Names are not unique. Use the id for subsequent writes.

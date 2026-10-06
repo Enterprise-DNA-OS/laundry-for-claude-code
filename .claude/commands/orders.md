@@ -1,3 +1,7 @@
+---
+description: "The order book"
+---
+
 # The order book
 
 Group tickets by store and status. Keep currencies separate. Show due dates, piece counts and recorded balances. Imported tickets without pieces need intake detail.
