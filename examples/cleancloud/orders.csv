@@ -1,0 +1,3 @@
+Order ID,Customer ID,Order Number,Created Date,Due Date,Status,Total,Paid Amount,Service,Notes
+O900,C100,900,2026-10-01,2026-10-03,Cleaning,18.50,0,linen,"Synthetic fixture, not a vendor export"
+O901,C101,901,2026-10-01,2026-10-04,Ready,27.99,10.00,dry-clean,"Detail garments after checking the source"

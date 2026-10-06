@@ -1,0 +1,5 @@
+{
+  "customers": {"id":"Customer ID", "name":"Name"},
+  "orders": {"id":"Order ID", "customer":"Customer ID", "received":"Created Date", "due":"Due Date"},
+  "statuses": {"cleaning":"processing"}
+}

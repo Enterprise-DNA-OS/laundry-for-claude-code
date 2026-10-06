@@ -1,115 +1,130 @@
-<h1 align="center">Laundry for Claude Code</h1>
+# Laundry for Claude Code
 
-<p align="center">
-  <strong>The open-source dry cleaning and laundry order system that is just a database and Claude Code.</strong>
-</p>
+The open-source laundry order system that is a database and a coding agent. Track garment intake, production, racks, claims and delivery runs. Created by Enterprise DNA.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free, MIT. Install and change it yourself. | Your fields, rules and CleanCloud data brought across. A counter screen or different stack can be scoped. | Installed, connected and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
+| [Quick start](#quick-start) | [Get your version built](https://enterprisedna.co/omni/book?offer=replace-software&utm_medium=github&utm_campaign=cleancloud) | [Book a call](https://enterprisedna.co/omni/book?offer=replace-software&utm_medium=github&utm_campaign=cleancloud) |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your CleanCloud data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=cleancloud">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/cleancloud?utm_source=github&utm_medium=readme&utm_campaign=cleancloud">How it works</a></td>
-  </tr>
-</table>
+Works with Claude Code, Codex, OpenCode or Cursor. Read [AGENTS.md](AGENTS.md) for the shared instructions.
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-cleancloud">Instead of CleanCloud</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+## What this does
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
+A dry cleaner's daily work is a chain of promises: what came in, what was counted, how it should be treated, where it sits and when the customer expects it back. This system keeps those records together. It refuses to mark a production order ready until every garment is checked, attributed to a checker and assigned a rack.
 
----
-
-## What is this
-
-Laundry for Claude Code does the job you pay CleanCloud for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the CleanCloud dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays CleanCloud per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=cleancloud).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+This is the order workflow. Keep your existing POS, payment terminal and machine controls. There is no customer app, offline driver app, live tracking, payroll, payment processing or automatic sending in the free version. Read [why no front end](docs/why-no-front-end.md).
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Needs Node 20 or newer. Commands work in Windows PowerShell and Linux shells.
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/laundry-for-claude-code.git
 cd laundry-for-claude-code
 npm install
+npm test
 npm run demo
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+The demo uses fictional records: two stores, six customers, twelve tickets, twenty-four pieces, a delivery run, two claims and two chemical records. Dates are relative to the day it is seeded so late work is visible. Repeating the seed does not overwrite changes.
 
-### Use it with your own Postgres or Supabase
+Open `views/week.html`, `views/rack.html`, `views/runs.html` and `views/compliance.html`. Documents appear in `docs-out/`: job tickets, garment tags, delivery manifests, claim records and chemical inventories. Change `brand.json` for your business name, colours and logo. Use an absolute or hosted logo URL that the output files can resolve.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+Open the folder in your coding agent and ask for `/production`, `/rack-check` or `/weekly-review`. Slash commands are recipes in `.claude/commands/`; other agents read the same files. Drafts stay in `drafts/` and nothing sends.
 
 ## The commands
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+| The order book | `/orders` |
+| One ticket and its history | `/order` |
+| Customer list | `/customers` |
+| Count and tag incoming garments | `/intake` |
+| Today in the plant | `/production` |
+| Finish a garment check | `/quality-check` |
+| Uncollected work | `/rack-check` |
+| Pickup and delivery commitments | `/delivery-run` |
+| Customer garment claims | `/claims` |
+| Care, claims and chemical records | `/compliance` |
+| Late, uncollected and overdue | `/attention` |
+| Monday laundry review | `/weekly-review` |
+| Draft a collection reminder | `/draft-pickup` |
+| Add a business record | `/add` |
+| Record an order event | `/log` |
+| Bring CleanCloud records across | `/import` |
+| Take a portable backup | `/export` |
+| Order value and recorded balances | `/metrics` |
+| Ten questions from the records | `/questions` |
+| Make this laundry system yours | `/customise` |
+| Add a read-only report | `/new-view` |
+| Prepare tickets, tags and manifests | `/documents` |
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## One CLI
 
-## Instead of cleancloud
-
-<!-- TODO(author): how to bring data across from CleanCloud; link docs/replace-cleancloud.md -->
-
-## Architecture
-
+```bash
+node scripts/laundry.mjs help
+node scripts/laundry.mjs order HL-1001 --json
+node scripts/laundry.mjs attention
+node scripts/laundry.mjs delivery-run "Harbour morning"
+node scripts/laundry.mjs questions 3
+node scripts/laundry.mjs log HL-1001 --actor=Jo --note="Customer confirmed collection tomorrow"
 ```
-laundry-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
+
+Names match case-insensitively and ids accept unique prefixes. Ambiguity lists candidates and exits 1. Every command accepts `--json`. Amounts are integer cents in storage and amounts entered on the command line are exact decimals. Reports keep store currencies separate. No exchange-rate conversion is implied. Metrics show order value, not recognised revenue.
+
+## Ten questions from your records
+
+Each question is implemented today by `questions <number>`. They can be changed to fit your operation. These are not a claim that the incumbent is unable to produce similar reports.
+
+1. Which late tickets still have unfinished pieces?
+2. Which ready tickets have been on the rack for a week?
+3. Which delivery stops promise an order that is not ready?
+4. Which customers have repeated open garment claims?
+5. Which pieces need another clean and when are they due?
+6. Which active pieces lack care or intake condition records?
+7. What recorded balance is tied up in each store and currency?
+8. Which customer remedy follow-ups are overdue?
+9. Which chemicals lack safety documents or inventory details?
+10. Which imported active tickets still need garment detail?
+
+## Your first hour: ten things to ask for
+
+1. Show today's production in promised-date order.
+2. Find every late ticket with an unfinished piece.
+3. List garments that need another clean.
+4. Find care labels we have not recorded.
+5. Show work left on the collection rack for a week.
+6. Check today's delivery run for orders that are not ready.
+7. Draft a collection reminder for a ready ticket.
+8. Prepare the week's claim follow-ups.
+9. Add a field for the customer's bag number with `/customise`.
+10. Add a read-only report of recleans by service with `/new-view`.
+
+## Bring CleanCloud records across
+
+```bash
+node scripts/laundry.mjs import cleancloud --customers=customers.csv --orders=orders.csv --store="Harbour Laundry" --dry-run
 ```
 
-## Built for coding agents
+The importer loads customers and order headers after export mapping. Read [the replacement guide](docs/replace-cleancloud.md) before removing `--dry-run`. Actual garment detail and integrations need separate work. Sample CSVs are synthetic fixtures, not a vendor-certified export format.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## Use your own database
 
-## Contributing
+Embedded PGlite writes to `.data/db`. A fresh `DATA_DIR` creates a separate business database. Set `DATABASE_URL` in the environment or a private .env file to use PostgreSQL, then run `npm run migrate`. Both adapters use the same migrations and parameterised queries. Never seed a real business database. Only one embedded process should run at a time.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+For a shared database, its owner sets access roles, TLS, private connectivity, backups and recovery. The scripts use the permissions of the supplied database user. There is no web login, per-user role manager or multi-tenant boundary in this base.
 
-## Want it installed and run for you?
+## Compliance records
 
-Enterprise DNA installs Laundry for Claude Code for your business, migrates your CleanCloud data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+`/compliance` checks care records, claim follow-ups and NZ chemical records, with separately labelled internal and statutory checks. [Sources and boundaries](docs/compliance.md) explain every rule. It flags missing evidence, not legal compliance. Demo substances are fictional. An operator verifies real supplier sheets and actual site holdings.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=cleancloud)
-- Read more: [enterprisedna.co/omni/instead-of/cleancloud](https://enterprisedna.co/omni/instead-of/cleancloud?utm_source=github&utm_medium=readme&utm_campaign=cleancloud)
+## Architecture and testing
 
-## License
+Nine tables and five SQL views, one JavaScript CLI and the shared document renderer. UUID identifiers, created and updated timestamps, update triggers and relational constraints keep records consistent. No frontend framework or application server.
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+`npm test` migrates and seeds a temporary database, exercises all CLI commands and ten analyses, checks failed and repeated imports, validates ready/delivery transitions and renders four views and five document types. Tests force embedded mode and never use your DATABASE_URL. GitHub Actions runs the same suite on Windows and Linux with Node 20 and 22. Local execution is recorded in docs/validation.md.
+
+Every schema change is a new migration. Add a command recipe and a meaningful smoke assertion with each new workflow. Backups and draft output are gitignored. Keep real customer data out of issues and commits.
+
+MIT licence. Built by Enterprise DNA. [Get your version built](https://enterprisedna.co/omni/book?offer=replace-software&utm_medium=github&utm_campaign=cleancloud).

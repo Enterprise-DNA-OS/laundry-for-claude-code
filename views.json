@@ -1,13 +1,47 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Laundry for Claude Code: what needs attention, rendered by npm run view",
+    "title": "Laundry week",
+    "subtitle": "Promises, production and follow-ups",
     "sections": [
       {
         "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "sql": "select ticket,customer,store,reason,days from v_attention order by days desc,ticket"
+      },
+      {
+        "title": "Production",
+        "sql": "select tag,ticket,description,stage,rack,due_on from v_production order by due_on,tag"
+      }
+    ]
+  },
+  {
+    "name": "rack",
+    "title": "Collection rack",
+    "sections": [
+      {
+        "title": "Ready for collection",
+        "sql": "select ticket,customer,store,pieces,days_on_rack,balance_cents,currency from v_order_board where status='ready' order by days_on_rack desc,ticket"
+      }
+    ]
+  },
+  {
+    "name": "runs",
+    "title": "Pickup and delivery",
+    "sections": [
+      {
+        "title": "Run manifest",
+        "sql": "select run,run_on,driver,sequence,kind,ticket,customer,address,pieces,warning from v_run_manifest order by run_on,run,sequence"
+      }
+    ]
+  },
+  {
+    "name": "compliance",
+    "title": "Record checks",
+    "subtitle": "Checks of recorded evidence, not legal certification",
+    "sections": [
+      {
+        "title": "Follow-up required",
+        "sql": "select rule,country,store,record,finding,basis from v_compliance order by store,rule,record"
       }
     ]
   }

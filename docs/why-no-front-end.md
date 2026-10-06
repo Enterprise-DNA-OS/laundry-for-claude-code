@@ -1,24 +1,9 @@
-# Why there is no front end
+# Why no front end
 
-CleanCloud is a database with a subscription. The tables underneath it are ordinary: a few entities, a few relationships, a handful of workflows you repeat every week. What you pay for is the layer on top that lets people who do not write SQL get at those tables. Screens, filters, dashboards, forms.
+The free version is the order book, the plant checklist and the delivery manifest. A coding agent runs one CLI over a database you own. The read-only HTML files are printable output, not a counter application.
 
-That layer used to be the whole product, because talking to a database was hard. It is not hard any more. Open this folder in Claude Code, describe what you want, and it writes the query, runs it, and explains the answer. Ask a question the dashboard never had a chart for and you still get an answer.
+A counter screen gives a cashier immediate touch input. A phone app gives a driver navigation, photographs and offline capture. A card terminal takes payments. This version does none of those. Keep the existing POS and payment terminal while you run this order workflow beside it. It does not control washers, conveyors, lockers or tag printers.
 
-## What you gain
+`npm run view` produces four reports. `npm run docs` produces five kinds of paperwork. `/new-view` adds a report in plain language; `/customise` changes the underlying fields or rules.
 
-- **Better answers.** A dashboard shows what the vendor decided to chart. Here you ask your own question, in your own words, and get it answered against your own data.
-- **No seats.** Everyone who needs to look can look. The bill does not grow with headcount.
-- **Your data in your Postgres.** Plain tables. Back them up, query them from anything, leave any time. There is no export step because there is nothing to leave.
-- **A process that matches you.** When your way of working changes, you add a command. You do not wait for a feature request to clear.
-
-## What you give up
-
-- **A visual board.** Stages are a table you ask about, not cards you drag.
-- **A phone app.** It runs where Claude Code runs.
-- **A vendor help desk.** This is open source. Enterprise DNA supports the installed version for businesses that want someone to call.
-
-## Who this fits
-
-Small teams who already use Claude Code, or who would rather learn to ask than learn another interface. If your team needs a screen to look at all day, keep CleanCloud. If you need the answers more than the screens, this is cheaper, faster and yours.
-
-Installed and run for you: https://enterprisedna.co/omni/instead-of/cleancloud
+Enterprise DNA can scope a counter screen, driver app, printer integration and connections to the rest of the business for the installed version. These are implementation work, not included integrations. Installation and support sit inside Omni by Enterprise DNA, for a setup fee and a retainer.

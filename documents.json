@@ -1,11 +1,74 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "job-ticket",
+    "title": "Laundry job ticket",
+    "for_each": "select id,ticket from orders where status not in ('collected','cancelled')",
+    "file": "ticket",
+    "sections": [
+      {
+        "title": "Order",
+        "sql": "select ticket,customer,store,status,due_on,total_cents,paid_cents,balance_cents,currency from v_order_board where id=$1"
+      },
+      {
+        "title": "Garment count and care",
+        "sql": "select tag,description,care_label,condition_in,stage,rack,checked_by from garments where order_id=$1 order by tag",
+        "note": "Confirm count and care instructions before production. This is not a payment receipt or tax invoice."
+      }
+    ]
+  },
+  {
+    "name": "garment-tag",
+    "title": "Garment tag",
+    "for_each": "select id,tag from garments",
+    "file": "tag",
+    "sections": [
+      {
+        "title": "Identification",
+        "sql": "select g.tag,o.ticket,g.description,g.care_label,o.due_on,g.rack from garments g join orders o on o.id=g.order_id where g.id=$1",
+        "note": "Plain text tag. Check your label stock and printer before operational use."
+      }
+    ]
+  },
+  {
+    "name": "run-manifest",
+    "title": "Delivery manifest",
+    "for_each": "select id,name from runs",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Run",
+        "sql": "select name,run_on,driver from runs where id=$1"
+      },
+      {
+        "title": "Stops",
+        "sql": "select v.sequence,v.kind,v.ticket,v.customer,v.address,v.pieces,v.warning,v.balance_cents,v.currency from v_run_manifest v join stops st on st.id=v.id where st.run_id=$1 order by v.sequence",
+        "note": "Confirm readiness before dispatch. Balances are recorded amounts, not payment requests."
+      }
+    ]
+  },
+  {
+    "name": "claim-record",
+    "title": "Customer garment claim",
+    "for_each": "select id,issue from claims",
+    "file": "issue",
+    "sections": [
+      {
+        "title": "Issue and response",
+        "sql": "select o.ticket,c.name as customer,cl.issue,cl.opened_on,cl.follow_up_on,cl.status,cl.remedy,cl.resolved_on from claims cl join orders o on o.id=cl.order_id join customers c on c.id=o.customer_id where cl.id=$1"
+      }
+    ]
+  },
+  {
+    "name": "chemical-inventory",
+    "title": "Hazardous substance register",
+    "for_each": "select id,name from stores",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Recorded substances",
+        "sql": "select name,location,max_quantity,hazard_class,sds_reference,sds_review_on from substances where store_id=$1 order by name",
+        "note": "Verify actual holdings, classifications, maximum quantities and emergency access. This register is not a site safety assessment."
+      }
     ]
   }
 ]
