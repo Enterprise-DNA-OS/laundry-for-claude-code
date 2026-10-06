@@ -8,11 +8,14 @@ import { migrate } from "./migrate.mjs";
 import { run, cents, date, render } from "./laundry.mjs";
 import { parseCsv } from "./lib/csv.mjs";
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), "laundry-test-"));
-process.env.DATABASE_URL = "";
+// Only an explicit TEST_DATABASE_URL can select a server; never use the operator's database URL.
+process.env.DATABASE_URL = process.env.TEST_DATABASE_URL || "";
 process.env.DATA_DIR = path.join(temp, "db");
 process.env.OUTPUT_DIR = temp;
 let db,
   checks = 0;
+let testSchema;
+const mode = process.env.TEST_DATABASE_URL ? 'postgres' : 'pglite';
 const check = (label, fn) => {
   fn();
   checks++;
@@ -33,6 +36,15 @@ const importArgs = [
 ];
 try {
   db = await getDb();
+  assert.equal(db.mode, mode);
+  if (mode === 'postgres') {
+    testSchema = `laundry_test_${process.pid}_${Date.now()}`;
+    await db.exec(`create schema ${testSchema}`);
+    await db.exec(`set search_path to ${testSchema}`);
+    const url = new URL(process.env.TEST_DATABASE_URL);
+    url.searchParams.set('options', `${url.searchParams.get('options') || ''} -c search_path=${testSchema}`.trim());
+    process.env.DATABASE_URL = url.toString();
+  }
   await migrate(db);
   assert.equal((await migrate(db)).ran.length, 0);
   const seed = fs.readFileSync(
@@ -349,12 +361,17 @@ try {
     assert.ok(!rendered.includes("<script>"));
   });
   console.log(
-    `PASS: ${checks} checks; every CLI command, all ten analyses, four views and five document types.`,
+    `PASS (${mode}): ${checks} checks; every CLI command, all ten analyses, four views and five document types.`,
   );
 } catch (e) {
   console.error("FAIL:", e.message, e.detail || "");
   process.exitCode = 1;
 } finally {
   if (db) await db.close();
+  if (testSchema) {
+    const cleanup = await getDb();
+    try { await cleanup.exec(`drop schema ${testSchema} cascade`); }
+    finally { await cleanup.close(); }
+  }
   fs.rmSync(temp, { recursive: true, force: true });
 }

@@ -123,7 +123,7 @@ For a shared database, its owner sets access roles, TLS, private connectivity, b
 
 Nine tables and five SQL views, one JavaScript CLI and the shared document renderer. UUID identifiers, created and updated timestamps, update triggers and relational constraints keep records consistent. No frontend framework or application server.
 
-`npm test` migrates and seeds a temporary database, exercises all CLI commands and ten analyses, checks failed and repeated imports, validates ready/delivery transitions and renders four views and five document types. Tests force embedded mode and never use your DATABASE_URL. GitHub Actions runs the same suite on Windows and Linux with Node 20 and 22. Local execution is recorded in docs/validation.md.
+`npm test` migrates and seeds a temporary database, exercises all CLI commands and ten analyses, checks failed and repeated imports, validates ready/delivery transitions and renders four views and five document types. Tests use embedded mode by default and never use your DATABASE_URL. An explicit TEST_DATABASE_URL selects an isolated temporary schema for the same suite on PostgreSQL. GitHub Actions runs the same suite on Windows and Linux with Node 20 and 22. Local execution is recorded in docs/validation.md.
 
 Every schema change is a new migration. Add a command recipe and a meaningful smoke assertion with each new workflow. Backups and draft output are gitignored. Keep real customer data out of issues and commits.
 
